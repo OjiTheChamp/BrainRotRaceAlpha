@@ -15,21 +15,21 @@
 
   /* TITLE */
   #title-screen{background:radial-gradient(ellipse at center,#1a003a 0%,#0a0010 70%)}
-  .title-art{font-family:'Bangers',cursive;font-size:clamp(3rem,10vw,7rem);letter-spacing:4px;line-height:1;text-align:center;background:linear-gradient(135deg,var(--neon-pink),var(--neon-cyan),var(--neon-yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px var(--neon-pink));animation:titlePulse 2s ease-in-out infinite}
+  .title-art{font-family:'Bangers',cursive;font-size:clamp(2rem,7vw,4.5rem);letter-spacing:4px;line-height:1;text-align:center;background:linear-gradient(135deg,var(--neon-pink),var(--neon-cyan),var(--neon-yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px var(--neon-pink));animation:titlePulse 2s ease-in-out infinite}
   @keyframes titlePulse{0%,100%{filter:drop-shadow(0 0 20px var(--neon-pink))}50%{filter:drop-shadow(0 0 40px var(--neon-cyan))}}
-  .subtitle{font-family:'Comic Neue',cursive;font-size:clamp(1rem,3vw,1.5rem);color:var(--neon-yellow);margin-top:8px;letter-spacing:2px;text-transform:uppercase;text-shadow:0 0 10px var(--neon-yellow);animation:blink 1.5s step-end infinite}
+  .subtitle{font-family:'Comic Neue',cursive;font-size:clamp(.8rem,2.5vw,1.1rem);color:var(--neon-yellow);margin-top:4px;letter-spacing:2px;text-transform:uppercase;text-shadow:0 0 10px var(--neon-yellow);animation:blink 1.5s step-end infinite}
   @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-  .character-select{display:flex;gap:16px;margin-top:30px;flex-wrap:wrap;justify-content:center;padding:0 20px}
-  .char-card{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.2);border-radius:16px;padding:14px 18px;cursor:pointer;transition:all .2s;text-align:center;min-width:105px}
+  .character-select{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;justify-content:center;padding:0 16px;max-height:55vh;overflow-y:auto;overflow-x:hidden}
+  .char-card{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 12px;cursor:pointer;transition:all .2s;text-align:center;min-width:90px;max-width:110px}
   .char-card:hover{transform:translateY(-5px) scale(1.05);border-color:var(--neon-cyan);box-shadow:0 0 20px var(--neon-cyan)}
   .char-card.selected{border-color:var(--neon-yellow);box-shadow:0 0 30px var(--neon-yellow);background:rgba(255,230,0,.1)}
-  .char-emoji{font-size:2.6rem;display:block}
+  .char-emoji{font-size:2rem;display:block}
   .char-name{font-size:.8rem;margin-top:5px;color:var(--neon-cyan);letter-spacing:1px}
   .char-stat{font-size:.65rem;color:#aaa;margin-top:2px}
   .char-stat span{color:var(--neon-green)}
   .stat-bar{width:75px;height:5px;background:rgba(255,255,255,.1);border-radius:3px;margin:2px auto;overflow:hidden}
   .stat-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--neon-green),var(--neon-cyan))}
-  .start-btn{margin-top:24px;padding:14px 48px;font-family:'Bangers',cursive;font-size:2rem;letter-spacing:3px;background:linear-gradient(135deg,var(--neon-pink),var(--neon-purple));color:#fff;border:none;border-radius:50px;cursor:pointer;box-shadow:0 0 30px var(--neon-pink);transition:all .2s}
+  .start-btn{margin-top:12px;padding:10px 36px;font-family:'Bangers',cursive;font-size:2rem;letter-spacing:3px;background:linear-gradient(135deg,var(--neon-pink),var(--neon-purple));color:#fff;border:none;border-radius:50px;cursor:pointer;box-shadow:0 0 30px var(--neon-pink);transition:all .2s}
   .start-btn:hover{transform:scale(1.08)}
   .start-btn:active{transform:scale(.97)}
 
@@ -124,7 +124,9 @@
   </div>
   <div class="tm-progress-wrap"><div id="tm-progress-fill"></div></div>
   <div class="tm-key-hint">← → MASH TO RUN FASTER!</div>
+  <div style="font-size:.75rem;color:#666;margin-top:6px;font-family:'Fredoka One',cursive">Press ENTER or click START RACE to begin anytime</div>
   <button id="tm-tap-btn" onclick="tmTap()">TAP TO RUN! 🏃</button>
+  <button id="tm-start-btn" onclick="tmStartNow()" style="margin-top:14px;padding:12px 40px;font-family:'Bangers',cursive;font-size:1.5rem;letter-spacing:2px;background:linear-gradient(135deg,var(--neon-pink),var(--neon-purple));color:#fff;border:none;border-radius:50px;cursor:pointer;box-shadow:0 0 20px var(--neon-pink)">🏁 START RACE!</button>
 </div>
 
 <!-- GAME -->
@@ -139,11 +141,18 @@
     <div class="boost-label">⚡ RIZZ</div>
     <div id="boost-bar-bg"><div id="boost-bar-fill"></div></div>
   </div>
+  <div id="special-bar-container" style="position:fixed;bottom:20px;left:20px;z-index:50;display:flex;flex-direction:column;align-items:flex-start;gap:4px">
+    <div class="boost-label" id="special-label" style="color:var(--neon-green);text-shadow:0 0 8px var(--neon-green);font-size:.85rem">⚡ SPECIAL READY!</div>
+    <div style="width:160px;height:10px;background:rgba(0,0,0,.5);border:1px solid var(--neon-green);border-radius:5px;overflow:hidden">
+      <div id="special-bar-fill" style="height:100%;width:100%;background:linear-gradient(90deg,#39ff14,#00f5ff);border-radius:5px;box-shadow:0 0 6px #39ff14"></div>
+    </div>
+  </div>
   <canvas id="gameCanvas"></canvas>
   <div id="controls-hint">
     <div class="key-hint">← → STEER</div>
     <div class="key-hint">↑ ACCELERATE</div>
     <div class="key-hint">SPACE BOOST</div>
+    <div class="key-hint">P SPECIAL</div>
   </div>
   <div id="touch-controls">
     <div class="touch-row">
@@ -153,9 +162,23 @@
     </div>
     <div class="touch-row">
       <div class="touch-btn" id="boost-touch">⚡ BOOST</div>
+      <div class="touch-btn" id="special-touch" style="width:80px;height:40px;font-family:'Bangers',cursive;font-size:.9rem;background:rgba(57,255,20,.3);border-color:var(--neon-green);color:var(--neon-green)">✨ SPECIAL</div>
     </div>
   </div>
 </div>
+
+<!-- COUNTDOWN OVERLAY -->
+<div id="countdown-overlay" style="display:none;position:fixed;inset:0;z-index:200;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);flex-direction:column;pointer-events:none">
+  <div class="cd-num" style="font-family:'Bangers',cursive;font-size:clamp(8rem,25vw,18rem);letter-spacing:4px;line-height:1;color:var(--neon-yellow)">3</div>
+</div>
+<style>
+@keyframes cdPop {
+  0%   { transform: scale(2.2); opacity:0; }
+  30%  { transform: scale(0.9); opacity:1; }
+  60%  { transform: scale(1.05); }
+  100% { transform: scale(1); opacity:1; }
+}
+</style>
 
 <!-- RESULTS -->
 <div class="screen hidden" id="result-screen">
@@ -174,12 +197,40 @@
 // CONSTANTS
 // ═══════════════════════════════════════════
 const CHARS = [
-  { name:'SKIBIDI',   emoji:'🚽', speed:7, accel:0.4,  boost:1.8, color:'#00f5ff' },
-  { name:'SIGMA',     emoji:'🐺', speed:8, accel:0.5,  boost:1.5, color:'#bc13fe' },
-  { name:'RIZZ LORD', emoji:'😎', speed:6, accel:0.6,  boost:2.2, color:'#ff006e' },
-  { name:'GYATT',     emoji:'🍑', speed:9, accel:0.35, boost:1.6, color:'#39ff14' },
-  { name:'FANUM',     emoji:'🍕', speed:7, accel:0.45, boost:1.7, color:'#ffe600' },
-  { name:'NPC',       emoji:'🤖', speed:6, accel:0.3,  boost:1.4, color:'#aaaaaa' },
+  // OG 6
+  { name:'SKIBIDI',   emoji:'🚽', speed:7, accel:0.4,  boost:1.8, color:'#00f5ff',
+    special:'flush',    specialLabel:'🚽 FLUSH!',        specialDesc:'Teleports forward 800m' },
+  { name:'SIGMA',     emoji:'🐺', speed:8, accel:0.5,  boost:1.5, color:'#bc13fe',
+    special:'shield',   specialLabel:'🛡️ SIGMA MODE',    specialDesc:'Invincible for 11s' },
+  { name:'RIZZ LORD', emoji:'😎', speed:6, accel:0.6,  boost:2.2, color:'#ff006e',
+    special:'rizz',     specialLabel:'😎 MAX RIZZ',      specialDesc:'Infinite boost for 8s' },
+  { name:'GYATT',     emoji:'🍑', speed:9, accel:0.35, boost:1.6, color:'#39ff14',
+    special:'stomp',    specialLabel:'🍑 GYATT STOMP',   specialDesc:'Slows ALL rivals by 70%' },
+  { name:'FANUM',     emoji:'🍕', speed:7, accel:0.45, boost:1.7, color:'#ffe600',
+    special:'tax',      specialLabel:'🍕 FANUM TAX',     specialDesc:'Steals speed from rivals' },
+  { name:'NPC',       emoji:'🤖', speed:6, accel:0.3,  boost:1.4, color:'#aaaaaa',
+    special:'glitch',   specialLabel:'🤖 NPC GLITCH',    specialDesc:'Teleports behind race leader' },
+  // NEW 10
+  { name:'DELULU',    emoji:'🌸', speed:7, accel:0.55, boost:1.9, color:'#ff69b4',
+    special:'delulu',   specialLabel:'🌸 DELULU RUN',    specialDesc:'Doubles speed for 6s (might crash)' },
+  { name:'MEWING',    emoji:'🦷', speed:8, accel:0.45, boost:1.6, color:'#e0e0e0',
+    special:'mew',      specialLabel:'🦷 MEWING AURA',   specialDesc:'Freezes all rivals for 4s' },
+  { name:'BUSSIN',    emoji:'🔥', speed:7, accel:0.5,  boost:2.0, color:'#ff6600',
+    special:'bussin',   specialLabel:'🔥 BUSSIN FR',     specialDesc:'Catches fire — blazing speed 10s' },
+  { name:'LOWKEY',    emoji:'🥷', speed:9, accel:0.4,  boost:1.5, color:'#444466',
+    special:'ninja',    specialLabel:'🥷 NINJA DASH',    specialDesc:'Teleports past 3 nearest rivals' },
+  { name:'NO CAP',    emoji:'🧢', speed:7, accel:0.6,  boost:1.7, color:'#3399ff',
+    special:'nocap',    specialDesc:'Removes all obstacles ahead',  specialLabel:'🧢 NO CAP CLEAR' },
+  { name:'SLAY',      emoji:'💅', speed:6, accel:0.5,  boost:2.3, color:'#cc44ff',
+    special:'slay',     specialLabel:'💅 SLAY QUEEN',    specialDesc:'Mega boost + rivals spin out' },
+  { name:'BASED',     emoji:'😤', speed:8, accel:0.4,  boost:1.6, color:'#cc8800',
+    special:'based',    specialLabel:'😤 BASED MODE',    specialDesc:'Immune to obstacles + speed +50%' },
+  { name:'RATIO',     emoji:'📉', speed:6, accel:0.7,  boost:1.8, color:'#00cc88',
+    special:'ratio',    specialLabel:'📉 RATIO!',        specialDesc:'Halves ALL rivals distance gains for 8s' },
+  { name:'VIBE',      emoji:'✨', speed:7, accel:0.45, boost:1.9, color:'#ffdd00',
+    special:'vibe',     specialLabel:'✨ VIBE CHECK',    specialDesc:'Random mega powerup every use' },
+  { name:'TOUCH GRASS',emoji:'🌿',speed:5, accel:0.8,  boost:2.5, color:'#44bb44',
+    special:'grass',    specialLabel:'🌿 TOUCH GRASS',   specialDesc:'Extreme acceleration burst' },
 ];
 const POWERUP_TYPES = [
   { emoji:'⚡', label:'RIZZ BOOST',   effect:'boost'       },
@@ -190,8 +241,8 @@ const POWERUP_TYPES = [
 const OBSTACLES   = ['🪨','🐸','📱','💀','🧊'];
 const TRACK_LEN   = 81000;
 const NUM_LANES   = 5;
-const AI_COUNT    = 3;
-const TM_DURATION = 30;
+const AI_COUNT    = 10;
+const TM_DURATION = 10;
 const MAX_TM_SPEED = 10;
 
 // ═══════════════════════════════════════════
@@ -256,20 +307,91 @@ function sndMenuClick()       { playTone(440,'square',0.08,0.48); playTone(660,'
 function sndTreadmillStep()   { const l=Math.floor(performance.now()/100)%2===0; playNoise(0.06,0.4,l?180:220); playTone(l?110:140,'sine',0.06,0.24); }
 function sndTreadmillMax()    { playTone(880,'sawtooth',0.12,0.63,0.005); playTone(1100,'square',0.08,0.48,0.005); }
 function sndBoostFire()       { playTone(200,'sawtooth',0.15,0.79,0.01,100); playTone(400,'square',0.1,0.48,0.01,200); }
+function sndSpecial() {
+  playTone(300,'sawtooth',0.08,0.79,0.005,150);
+  playTone(600,'square',0.12,0.63,0.005,300);
+  playTone(900,'sine',0.18,0.48,0.01,450);
+}
 function sndObstacleHit()     { playNoise(0.25,0.95,300); playTone(80,'sawtooth',0.3,0.79,0.005,200); }
 function sndCountdownTick()   { playTone(660,'square',0.06,0.4); }
 function sndCountdownUrgent() { playTone(880,'square',0.04,0.55); }
 
 function sndRaceStart() {
+  // Mario-style countdown beeps (3-2-1-GO!)
   const ac = getAudio();
-  [0,0.35,0.7].forEach((t,i) => {
+  // Beep on 3, 2, 1 — rising pitch
+  [0, 1.0, 2.0].forEach((t, i) => {
     const osc=ac.createOscillator(), g=ac.createGain();
-    osc.connect(g); g.connect(ac.destination); osc.type='square';
-    osc.frequency.value=[440,550,880][i];
-    g.gain.setValueAtTime(0.63,ac.currentTime+t);
-    g.gain.exponentialRampToValueAtTime(0.0001,ac.currentTime+t+0.25);
-    osc.start(ac.currentTime+t); osc.stop(ac.currentTime+t+0.3);
+    osc.connect(g); g.connect(ac.destination);
+    osc.type='square'; osc.frequency.value=[392,523,659][i];
+    g.gain.setValueAtTime(0,ac.currentTime+t);
+    g.gain.linearRampToValueAtTime(0.7,ac.currentTime+t+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001,ac.currentTime+t+0.45);
+    osc.start(ac.currentTime+t); osc.stop(ac.currentTime+t+0.5);
+    // Extra harmonic for mario feel
+    const osc2=ac.createOscillator(), g2=ac.createGain();
+    osc2.connect(g2); g2.connect(ac.destination);
+    osc2.type='sine'; osc2.frequency.value=[784,1046,1318][i];
+    g2.gain.setValueAtTime(0,ac.currentTime+t);
+    g2.gain.linearRampToValueAtTime(0.3,ac.currentTime+t+0.01);
+    g2.gain.exponentialRampToValueAtTime(0.0001,ac.currentTime+t+0.35);
+    osc2.start(ac.currentTime+t); osc2.stop(ac.currentTime+t+0.4);
   });
+  // GO! — big fanfare chord at t=3
+  [0,0.08,0.16].forEach((off,i) => {
+    const osc=ac.createOscillator(), g=ac.createGain();
+    osc.connect(g); g.connect(ac.destination);
+    osc.type='sawtooth'; osc.frequency.value=[523,659,784][i];
+    g.gain.setValueAtTime(0,ac.currentTime+3+off);
+    g.gain.linearRampToValueAtTime(0.5,ac.currentTime+3+off+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,ac.currentTime+3+off+0.5);
+    osc.start(ac.currentTime+3+off); osc.stop(ac.currentTime+3+off+0.6);
+  });
+}
+
+function marioCountdownVoice(onGo) {
+  // Show overlay countdown 3 → 2 → 1 → GO!
+  const overlay = document.getElementById('countdown-overlay');
+  if (!overlay) return onGo();
+
+  const labels = ['3','2','1','GO!'];
+  const colors = ['#ffe600','#ff6600','#ff006e','#39ff14'];
+  let i = 0;
+
+  function showNext() {
+    if (i >= labels.length) {
+      overlay.style.opacity = '0';
+      setTimeout(() => { overlay.style.display='none'; onGo(); }, 200);
+      return;
+    }
+    overlay.style.display = 'flex';
+    overlay.style.opacity = '1';
+    overlay.querySelector('.cd-num').textContent = labels[i];
+    overlay.querySelector('.cd-num').style.color = colors[i];
+    overlay.querySelector('.cd-num').style.textShadow = `0 0 40px ${colors[i]}, 0 0 80px ${colors[i]}`;
+    overlay.querySelector('.cd-num').style.animation = 'cdPop .8s ease-out forwards';
+
+    // Mario voice via Web Speech
+    if (window.speechSynthesis && labels[i] !== 'GO!') {
+      const utter = new SpeechSynthesisUtterance(labels[i]);
+      utter.pitch = 1.6;
+      utter.rate  = 0.85;
+      utter.volume = 1;
+      // Try to pick a higher/fun voice
+      const voices = speechSynthesis.getVoices();
+      const pick = voices.find(v => /mario|italian|google|samantha|en/i.test(v.name)) || voices[0];
+      if (pick) utter.voice = pick;
+      speechSynthesis.speak(utter);
+    } else if (window.speechSynthesis && labels[i] === 'GO!') {
+      const utter = new SpeechSynthesisUtterance('GO!');
+      utter.pitch = 2.0; utter.rate = 1.2; utter.volume = 1;
+      speechSynthesis.speak(utter);
+    }
+
+    i++;
+    setTimeout(showNext, i < 4 ? 1000 : 600);
+  }
+  showNext();
 }
 
 function sndPowerup() {
@@ -354,7 +476,7 @@ const MUSIC_VOL = 0.20;
 const N = {
   E5:659.25, B4:493.88, C5:523.25, D5:587.33, A4:440.00, F4:349.23,
   G4:392.00,  A3:220.00, C4:261.63, E4:329.63, F5:698.46, G5:783.99,
-  D4:293.66,  B3:246.94, Bb4:466.16, Bb3:233.08,
+  D4:293.66,  B3:246.94, Bb4:466.16, Bb3:233.08, A5:880.00,
 };
 
 // Tetris Theme A — full A+B section, faithful to the original
@@ -486,8 +608,8 @@ function buildCharSelect() {
       <div class="char-name">${c.name}</div>
       <div class="char-stat">SPD <span>${c.speed}</span></div>
       <div class="stat-bar"><div class="stat-fill" style="width:${c.speed/10*100}%"></div></div>
-      <div class="char-stat">BOOST <span>${c.boost.toFixed(1)}x</span></div>
-      <div class="stat-bar"><div class="stat-fill" style="width:${(c.boost-1)/1.5*100}%"></div></div>
+      <div class="char-stat">⚡ <span>${c.specialLabel}</span></div>
+      <div class="char-stat" style="font-size:.6rem;color:#777;margin-top:1px">${c.specialDesc}</div>
     `;
     card.onclick = () => {
       selectedChar = i;
@@ -506,6 +628,10 @@ window.addEventListener('keydown', e => {
     keys[e.code] = true;
     if (gameState==='treadmill' && ['ArrowLeft','ArrowRight','ArrowUp','Space','KeyA','KeyD'].includes(e.code))
       tmTap();
+    if (gameState==='treadmill' && (e.code==='Enter' || e.code==='KeyR'))
+      tmStartNow();
+    if (gameState==='playing' && e.code==='KeyP')
+      keys['_pJustPressed'] = true;
   }
   if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)) e.preventDefault();
 });
@@ -519,6 +645,11 @@ window.addEventListener('keyup', e => { keys[e.code] = false; });
   el.addEventListener('touchstart', e => { keys[keyMap[id]]=true; e.preventDefault(); }, {passive:false});
   el.addEventListener('touchend',   e => { keys[keyMap[id]]=false; e.preventDefault(); }, {passive:false});
 });
+// Special touch button
+const specialTouchBtn = document.getElementById('special-touch');
+if (specialTouchBtn) {
+  specialTouchBtn.addEventListener('touchstart', e => { keys['_pJustPressed']=true; e.preventDefault(); }, {passive:false});
+}
 
 // ═══════════════════════════════════════════
 // TITLE → TREADMILL
@@ -549,7 +680,7 @@ function goTreadmill() {
 
   let lastTs = performance.now();
   function loop(ts) {
-    if (gameState !== 'treadmill') return;
+    if (gameState !== 'treadmill') return;  // stops on tmStartNow too
     const dt = Math.min((ts - lastTs) / 1000, 0.05);
     lastTs = ts;
 
@@ -579,6 +710,14 @@ function goTreadmill() {
     tmAnimFrame = requestAnimationFrame(loop);
   }
   tmAnimFrame = requestAnimationFrame(loop);
+}
+
+function tmStartNow() {
+  if (gameState !== 'treadmill') return;
+  gameState = 'done_treadmill'; // stop the loop
+  earnedSpeed = tmSpeed;
+  if (tmAnimFrame) cancelAnimationFrame(tmAnimFrame);
+  startRace();
 }
 
 function tmTap() {
@@ -703,19 +842,25 @@ function startRace() {
     vel:startVel, lateralVel:0, dist:0, char:c,
     shield:false, turbo:false, turboTimer:0,
     emoji:c.emoji, color:c.color,
+    specialCooldown:0,   // seconds until special can be used again
+    specialActive:false, // is special currently firing
+    specialTimer:0,      // duration remaining for time-based specials
+    rizzMode:false,      // rizz lord infinite boost
   };
 
   aiRacers = Array.from({length:AI_COUNT}, (_,i) => {
-    const lane=[0,1,3,4][i%4];
+    const lane=i%NUM_LANES;
     const rc=CHARS[(selectedChar+i+1)%CHARS.length];
     return { lane, x:laneW*lane+laneW/2, y:canvas.height*0.75,
       vel:0, dist:0, char:rc, emoji:rc.emoji, color:rc.color,
       finished:false, finishTime:null,
-      warmupDur:4+Math.random()*9, timeAlive:0 };
+      warmupDur:4+Math.random()*9, timeAlive:0,
+      _frozenTimer:0, _ratioTimer:0 };
   });
 
   powerups=[]; obstacles=[]; particles=[];
   boostMeter=100; boosting=false; lastBoostState=false;
+  keys['_pJustPressed'] = false;
   raceTimer=0; countdownTimer=13*60; lastRaceSec=780;
   topSpeed=0; powerupCount=0; cameraY=0; lastTime=0;
   keys={}; // clear any held keys from treadmill mashing
@@ -728,9 +873,18 @@ function startRace() {
 
   sndRaceStart();
   sndEngineStart();
-  startMusic();
-  if (animId) cancelAnimationFrame(animId);
-  animId = requestAnimationFrame(gameLoop);
+
+  // Freeze player movement during countdown
+  gameState = 'countdown';
+
+  marioCountdownVoice(() => {
+    // GO! — now actually start
+    gameState = 'playing';
+    startMusic();
+    lastTime = 0;
+    if (animId) cancelAnimationFrame(animId);
+    animId = requestAnimationFrame(gameLoop);
+  });
 }
 
 // ═══════════════════════════════════════════
@@ -741,6 +895,7 @@ function gameLoop(ts) {
   const dt = Math.min((ts-lastTime)/1000, 0.05);
   lastTime = ts;
   if (gameState==='playing') { update(dt); render(); animId=requestAnimationFrame(gameLoop); }
+  else if (gameState==='countdown') { render(); animId=requestAnimationFrame(gameLoop); }
 }
 
 // ═══════════════════════════════════════════
@@ -758,16 +913,35 @@ function update(dt) {
   if (keys['ArrowUp']||keys['KeyW']) player.vel=Math.min(player.vel+c.accel*60*dt, c.speed*2);
   else                                player.vel=Math.max(player.vel-1.5*dt, 0);
 
-  // Boost
+  // Special ability cooldown tick
+  if (player.specialCooldown > 0) player.specialCooldown -= dt;
+
+  // Rizz mode timer (infinite boost)
+  if (player.rizzMode) {
+    player.specialTimer -= dt;
+    if (player.specialTimer <= 0) { player.rizzMode = false; }
+  }
+
+  // Boost / Special trigger on Space
   const boostHeld = keys['Space']||keys['ShiftLeft'];
-  boosting = boostHeld && boostMeter>0;
+  boosting = boostHeld && boostMeter > 0;
+
+  // Fire special on P key (one-shot, not held)
+  if (keys['_pJustPressed'] && player.specialCooldown <= 0) {
+    fireSpecial(c.special);
+    keys['_pJustPressed'] = false;
+  }
+
+  // Rizz mode = infinite boost meter
+  if (player.rizzMode) boostMeter = 100;
+
   if (boosting) {
-    boostMeter=Math.max(0, boostMeter-9.09*dt);
-    player.vel=Math.min(player.vel+c.accel*120*dt, c.speed*2*(player.turbo?c.boost*1.4:c.boost));
+    boostMeter = Math.max(0, boostMeter - 9.09*dt);
+    player.vel = Math.min(player.vel + c.accel*120*dt, c.speed*2*(player.turbo?c.boost*1.4:c.boost));
     document.getElementById('boost-flash').classList.add('active');
   } else {
     document.getElementById('boost-flash').classList.remove('active');
-    if (!boostHeld) boostMeter=Math.min(100, boostMeter+20*dt);
+    if (!boostHeld) boostMeter = Math.min(100, boostMeter + 20*dt);
   }
   if (boosting && !lastBoostState) sndBoostFire();
   lastBoostState = boosting;
@@ -794,7 +968,11 @@ function update(dt) {
     ai.vel=Math.max(0, ai.vel+(fs*wf-ai.vel)*2*dt);
     if (Math.random()<.02) ai.lane=Math.max(0,Math.min(NUM_LANES-1,ai.lane+(Math.random()<.5?-1:1)));
     ai.x    +=(laneW*ai.lane+laneW/2-ai.x)*3*dt;
-    ai.dist +=ai.vel*60*dt;
+    // Frozen by MEWING special
+    if (ai._frozenTimer > 0) { ai._frozenTimer -= dt; return; }
+    // Halved by RATIO special
+    const ratioPenalty = (ai._ratioTimer > 0) ? (ai._ratioTimer -= dt, 0.5) : 1;
+    ai.dist += ai.vel * 60 * dt * ratioPenalty;
     if (ai.dist>=TRACK_LEN&&!ai.finished) { ai.finished=true; ai.finishTime=raceTimer; }
   });
 
@@ -837,6 +1015,15 @@ function update(dt) {
   document.getElementById('speed-val').textContent=Math.round(player.vel*10);
   document.getElementById('dist-val').textContent=Math.round(player.dist);
   document.getElementById('boost-bar-fill').style.width=boostMeter+'%';
+  // Special ability cooldown bar
+  const coolPct = player ? Math.max(0, 1 - player.specialCooldown/18)*100 : 100;
+  const spEl = document.getElementById('special-bar-fill');
+  if (spEl) {
+    spEl.style.width = coolPct+'%';
+    spEl.style.background = coolPct>=100 ? 'linear-gradient(90deg,#39ff14,#00f5ff)' : 'linear-gradient(90deg,#444,#666)';
+  }
+  const spLabel = document.getElementById('special-label');
+  if (spLabel && player) spLabel.textContent = coolPct>=100 ? player.char.specialLabel+' READY!' : '⚡ CHARGING...';
   const mins=Math.floor(countdownTimer/60), secs=Math.floor(countdownTimer%60);
   const tel=document.getElementById('countdown-val');
   tel.textContent=mins+':'+String(secs).padStart(2,'0');
@@ -857,6 +1044,121 @@ function applyPowerup(type) {
   else if (type.effect==='turbo')       { player.turbo=true; player.turboTimer=11; }
   else if (type.effect==='shield')      { player.shield=true; setTimeout(()=>player.shield=false,11000); }
   else if (type.effect==='slow_others') aiRacers.forEach(ai=>ai.vel*=.5);
+}
+
+function fireSpecial(special) {
+  const COOLDOWN = 18;
+  player.specialCooldown = COOLDOWN;
+  showPowerupPopup(player.char.specialLabel);
+  sndSpecial();
+  fireSpecialEffect(special);
+}
+
+function fireSpecialEffect(special) {
+  if (special === 'flush') {
+    // SKIBIDI: teleport 800m forward
+    player.dist = Math.min(TRACK_LEN - 100, player.dist + 800);
+    spawnParticles(player.x, player.y, '#00f5ff', 20);
+
+  } else if (special === 'shield') {
+    // SIGMA: invincible shield for 11s
+    player.shield = true;
+    player.specialTimer = 11;
+    setTimeout(() => player.shield = false, 11000);
+
+  } else if (special === 'rizz') {
+    // RIZZ LORD: infinite boost meter for 8s
+    player.rizzMode = true;
+    player.specialTimer = 8;
+    boostMeter = 100;
+
+  } else if (special === 'stomp') {
+    // GYATT: slam all rivals to 30% speed
+    aiRacers.forEach(ai => ai.vel *= 0.3);
+    spawnParticles(player.x, player.y, '#39ff14', 25);
+
+  } else if (special === 'tax') {
+    // FANUM: steal speed from the leading rival
+    const leader = [...aiRacers].filter(a=>!a.finished).sort((a,b)=>b.dist-a.dist)[0];
+    if (leader) {
+      const stolen = leader.vel * 0.5;
+      leader.vel  -= stolen;
+      player.vel  += stolen * 0.8;
+    }
+    spawnParticles(player.x, player.y, '#ffe600', 18);
+
+  } else if (special === 'glitch') {
+    const allDists = aiRacers.filter(a=>!a.finished).map(a=>a.dist);
+    if (allDists.length) {
+      const best = Math.max(...allDists);
+      if (best > player.dist) {
+        player.dist = Math.max(player.dist, best - 200);
+        spawnParticles(player.x, player.y, '#aaaaaa', 20);
+      }
+    }
+
+  } else if (special === 'delulu') {
+    // DELULU: double speed for 6s — but 30% chance of a crash
+    player.turbo = true; player.turboTimer = 6;
+    if (Math.random() < 0.3) { player.vel *= 0.2; spawnParticles(player.x, player.y, '#ff69b4', 18); }
+
+  } else if (special === 'mew') {
+    // MEWING: freeze all rivals for 4s
+    aiRacers.forEach(ai => { ai._frozenTimer = 4; });
+    spawnParticles(player.x, player.y, '#e0e0e0', 20);
+
+  } else if (special === 'bussin') {
+    // BUSSIN: catch fire — big speed boost for 10s
+    player.turbo = true; player.turboTimer = 10;
+    player.vel = Math.min(player.vel * 2, player.char.speed * 3);
+    spawnParticles(player.x, player.y, '#ff6600', 25);
+
+  } else if (special === 'ninja') {
+    // NINJA: teleport past 3 nearest rivals ahead
+    const ahead = aiRacers.filter(a=>!a.finished && a.dist > player.dist)
+      .sort((a,b)=>a.dist-b.dist).slice(0,3);
+    if (ahead.length) player.dist = ahead[ahead.length-1].dist + 150;
+    spawnParticles(player.x, player.y, '#444466', 20);
+
+  } else if (special === 'nocap') {
+    // NO CAP: clear all obstacles in the next 2000m
+    obstacles.forEach(o => { if (!o.hit && o.dist > player.dist && o.dist < player.dist+2000) o.hit=true; });
+    spawnParticles(player.x, player.y, '#3399ff', 15);
+
+  } else if (special === 'slay') {
+    // SLAY: mega boost + spin out all rivals
+    boostMeter = 100; player.vel = player.char.speed * 3;
+    aiRacers.forEach(ai => { ai.vel *= 0.25; ai.lane = Math.floor(Math.random()*NUM_LANES); });
+    spawnParticles(player.x, player.y, '#cc44ff', 30);
+
+  } else if (special === 'based') {
+    // BASED: obstacle immunity + 50% speed bonus for 8s
+    player.shield = true; player.specialTimer = 8;
+    player.vel *= 1.5;
+    setTimeout(()=>player.shield=false, 8000);
+    spawnParticles(player.x, player.y, '#cc8800', 20);
+
+  } else if (special === 'ratio') {
+    // RATIO: halve rivals' distance gain rate for 8s
+    aiRacers.forEach(ai => { ai._ratioTimer = 8; });
+    spawnParticles(player.x, player.y, '#00cc88', 20);
+
+  } else if (special === 'vibe') {
+    // VIBE CHECK: random surprise — pick a random non-vibe special and fire its
+    // effect directly without resetting the cooldown again
+    const vibes = ['flush','stomp','tax','bussin','nocap','slay','ninja','grass'];
+    const picked = vibes[Math.floor(Math.random()*vibes.length)];
+    showPowerupPopup('✨ VIBE: ' + picked.toUpperCase() + '!');
+    // Directly execute the effect inline to avoid double cooldown
+    fireSpecialEffect(picked);
+    return; // cooldown already set above
+
+  } else if (special === 'grass') {
+    // TOUCH GRASS: extreme acceleration burst
+    player.vel = player.char.speed * 4;
+    player.turbo = true; player.turboTimer = 4;
+    spawnParticles(player.x, player.y, '#44bb44', 25);
+  }
 }
 
 let popupTimer=null;
