@@ -45,18 +45,17 @@ A chaotic browser racing game where you train your brainrot character on a tread
 
 ## 🚀 Running the Game
 
-Just open `index.html` in any modern browser — no server, no build step, no dependencies.
+Just open `brainrot_race.html` in any modern browser — no server, no build step, no dependencies.
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/brainrot-speedrun.git
+git clone https://github.com/OjiTheChamp/BrainRotRaceAlpha.git
 
 # Open in browser
-open index.html
+open brainrot_race.html
 ```
 
-Or play it live at: **[your-deploy-url-here]**
-
+Or play it live at: http://ojithechamp.github.io/BrainRotRaceAlpha 
 ---
 
 ## 🛠️ Built With
