@@ -55,7 +55,7 @@ git clone https://github.com/OjiTheChamp/BrainRotRaceAlpha.git
 open brainrot_race.html
 ```
 
-Or play it live at: http://ojithechamp.github.io/BrainRotRaceAlpha 
+Or play it live at: **https://ojithechamp.github.io/BrainRotRaceAlpha**   
 ---
 
 ## 🛠️ Built With
