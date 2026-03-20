@@ -45,7 +45,7 @@ A chaotic browser racing game where you train your brainrot character on a tread
 
 ## 🚀 Running the Game
 
-Just open `brainrot_race.html` in any modern browser — no server, no build step, no dependencies.
+Just open `index.html` in any modern browser — no server, no build step, no dependencies.
 
 ```bash
 # Clone the repo
