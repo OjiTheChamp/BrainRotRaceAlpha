@@ -49,13 +49,14 @@ Just open `index.html` in any modern browser — no server, no build step, no de
 
 ```bash
 # Clone the repo
-git clone https://github.com/OjiTheChamp/BrainRotRaceAlpha.git
+git clone https://github.com/YOUR_USERNAME/brainrot-speedrun.git
 
 # Open in browser
-open brainrot_race.html
+open index.html
 ```
 
-Or play it live at: **https://ojithechamp.github.io/BrainRotRaceAlpha**   
+Or play it live at: **[your-deploy-url-here]**
+
 ---
 
 ## 🛠️ Built With
